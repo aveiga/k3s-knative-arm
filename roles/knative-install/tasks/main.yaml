@@ -36,8 +36,8 @@
     kind: configmap
     namespace: knative-serving
     name: config-network
-    # merge_type:
-    #   - merge
+    merge_type:
+      - merge
     definition:
       data:
         ingress-class: "kourier.ingress.networking.knative.dev"
