@@ -1,0 +1,5 @@
+---
+- name: Install k3s
+  hosts: k8s
+  roles:
+    - k3s-install

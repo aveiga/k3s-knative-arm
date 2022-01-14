@@ -1,0 +1,5 @@
+---
+- name: Install Knative
+  hosts: k8s
+  roles:
+    - knative-install

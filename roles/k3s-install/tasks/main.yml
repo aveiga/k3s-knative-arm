@@ -1,0 +1,25 @@
+---
+- name: Install K3s
+  become: true
+  shell: curl -sfL https://get.k3s.io | sh -s - --disable traefik
+  ignore_errors: true
+  async: 30
+  poll: 5
+
+- name: Ensure k3s is running
+  become: true
+  ansible.builtin.systemd:
+    state: restarted
+    name: k3s
+
+- name: Create kubeconfig folder
+  ansible.builtin.file:
+    path: "/home/{{ ansible_user }}/.kube"
+    state: directory
+
+- name: Setup kubeconfig
+  become: true
+  ansible.builtin.copy:
+    src: "/etc/rancher/k3s/k3s.yaml"
+    dest: "/home/{{ ansible_user }}/.kube/config"
+    remote_src: true
