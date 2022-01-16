@@ -1,0 +1,5 @@
+---
+- name: Install pre-requisites
+  hosts: k8s
+  roles:
+    - pre-requisites

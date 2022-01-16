@@ -1,0 +1,5 @@
+---
+- name: Setup Knative to use sslip.io magic
+  hosts: k8s
+  roles:
+    - magic-dns

@@ -1,0 +1,5 @@
+---
+- name: Test K3s + Knative installation by deploying Nginx as a Knative }/serving-core.yaml"
+  hosts: k8s
+  roles:
+    - deploy-nginx

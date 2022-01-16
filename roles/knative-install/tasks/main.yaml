@@ -2,13 +2,13 @@
 - name: Download Knative Serving CRDs yaml
   ansible.builtin.get_url:
     url: "https://github.com/knative/serving/releases/download/knative-v1.1.0/serving-crds.yaml"
-    dest: "~/serving-crds.yaml"
+    dest: "{{ installer_working_dir }}/serving-crds.yaml"
     mode: "0664"
 
 - name: Download Knative Serving Core yaml
   ansible.builtin.get_url:
     url: "https://github.com/knative/serving/releases/download/knative-v1.1.0/serving-core.yaml"
-    dest: "~/serving-core.yaml"
+    dest: "{{ installer_working_dir }}/serving-core.yaml"
     mode: "0664"
 
 - name: Install Knative Serving
@@ -16,19 +16,19 @@
     state: present
     src: "{{ item }}"
   loop:
-    - "~/serving-crds.yaml"
-    - "~/serving-core.yaml"
+    - "{{ installer_working_dir }}/serving-crds.yaml"
+    - "{{ installer_working_dir }}/serving-core.yaml"
 
 - name: Download Knative Kourier Controller yaml
   ansible.builtin.get_url:
     url: "https://github.com/knative/net-kourier/releases/download/knative-v1.1.0/kourier.yaml"
-    dest: "~/kourier.yaml"
+    dest: "{{ installer_working_dir }}/kourier.yaml"
     mode: "0664"
 
 - name: Install Knative Kourier controller
   kubernetes.core.k8s:
     state: present
-    src: "~/kourier.yaml"
+    src: "{{ installer_working_dir }}/kourier.yaml"
 
 - name: Configure Knative Serving to use Kourier
   kubernetes.core.k8s:

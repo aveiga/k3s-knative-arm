@@ -1,2 +1,3 @@
 ---
 ansible_become_password: "{{ vaulted_ansible_become_password }}"
+installer_working_dir: "/home/{{ ansible_user }}/k3s-knative-arm-installer"

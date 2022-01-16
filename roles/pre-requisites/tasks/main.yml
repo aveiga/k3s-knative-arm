@@ -1,0 +1,96 @@
+---
+- name: Ensure installer working dir is created
+  ansible.builtin.file:
+    path: "{{ installer_working_dir }}"
+    state: directory
+
+- name: Install pip3
+  ansible.builtin.package:
+    name: python3-pip
+    state: present
+
+- name: Install Python's docker package
+  pip:
+    name: docker
+
+- name: Install Python's openshift package
+  pip:
+    name: openshift
+
+- name: Install Python's PyYAML package
+  pip:
+    name: PyYAML
+
+- name: Get K9s
+  ansible.builtin.get_url:
+    url: "https://github.com/derailed/k9s/releases/download/v0.25.18/k9s_Linux_arm64.tar.gz"
+    dest: "/tmp/k9s_Linux_arm64.tar.gz"
+    mode: "0664"
+
+- name: Create temporary K9s directory
+  ansible.builtin.file:
+    state: directory
+    path: "/tmp/k9s"
+
+- name: Unpack K9s
+  ansible.builtin.unarchive:
+    src: "/tmp/k9s_Linux_arm64.tar.gz"
+    dest: "/tmp/k9s"
+    remote_src: true
+
+- name: Install K9s
+  become: true
+  ansible.builtin.copy:
+    src: "/tmp/k9s/k9s"
+    dest: "/usr/bin/k9s"
+    mode: "+x"
+    remote_src: true
+
+- name: Cleaning Up temporary K9s installation files
+  become: true
+  ansible.builtin.file:
+    path: "/tmp/{{ item }}"
+    state: absent
+  with_items:
+    - "k9s_Linux_arm64.tar.gz"
+    - "k9s"
+
+- name: Get kn
+  become: true
+  ansible.builtin.get_url:
+    url: "https://github.com/knative/client/releases/download/knative-v1.1.0/kn-linux-arm64"
+    dest: "/usr/bin/kn"
+    mode: "+x"
+
+- name: Download Helm
+  ansible.builtin.get_url:
+    url: "https://get.helm.sh/helm-v3.7.1-linux-arm64.tar.gz"
+    dest: "/tmp/helm-v3.7.1-linux-arm64.tar.gz"
+
+- name: Create temporary helm directory
+  ansible.builtin.file:
+    state: directory
+    path: "/tmp/helm"
+
+- name: Unpackage Helm
+  ansible.builtin.unarchive:
+    src: "/tmp/helm-v3.7.1-linux-arm64.tar.gz"
+    dest: "/tmp/helm"
+    remote_src: true
+
+- name: Install Helm
+  become: true
+  ansible.builtin.copy:
+    src: "/tmp/helm/linux-arm64/helm"
+    dest: "/usr/local/bin/helm"
+    mode: "+x"
+    remote_src: true
+
+- name: Cleaning Up temporary Helm installation files
+  become: true
+  ansible.builtin.file:
+    path: "/tmp/{{ item }}"
+    state: absent
+  with_items:
+    - "helm-v3.7.1-linux-arm64.tar.gz"
+    - "helm"

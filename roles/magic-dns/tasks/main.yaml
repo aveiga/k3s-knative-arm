@@ -1,0 +1,11 @@
+---
+- name: Download Knative Serving Configuration Job yaml
+  ansible.builtin.get_url:
+    url: "https://github.com/knative/serving/releases/download/knative-v1.1.0/serving-default-domain.yaml"
+    dest: "{{ installer_working_dir }}/serving-default-domain.yaml"
+    mode: "0664"
+
+- name: Configure Knative Serving to use sslip.io
+  kubernetes.core.k8s:
+    state: present
+    src: "{{ installer_working_dir }}/serving-default-domain.yaml"
