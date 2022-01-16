@@ -1,6 +1,6 @@
 ---
 - name: Deploy Nginx Knative Service
-  community.kubernetes.k8s:
+  kubernetes.core.k8s:
     state: present
     namespace: default
     definition: "{{ lookup('template', '../templates/hello.yaml.j2') | from_yaml }}"
