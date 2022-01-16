@@ -10,7 +10,7 @@ The following tools must be installed on the machine acting as Ansible server:
 - The `kubernetes.core.k8s` Ansible collection
 - SSH access to a Linux machine (can be the same machine as the Ansible server) where the Kubernetes "cluster" will be installed
 
-## Quick-start
+## Quickstart
 
 - Define your host in `hosts.yaml`. Read here for more info
 - The "sudo" password for the user defined in the `hosts.yaml` file must be defined as a vaulted variable. To do it:
